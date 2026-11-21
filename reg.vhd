@@ -3,10 +3,10 @@ use ieee.std_logic_1164.all;
 
 entity reg is
 	port(
-		clk 	: in std_logic;
-		reset : in std_logic;
-		en		: in std_logic;
-		D_in  : in std_logic_vector( 7 downto 0 );
+		clk 	: in  std_logic;
+		reset : in  std_logic;
+		en		: in  std_logic;
+		D_in  : in  std_logic_vector( 7 downto 0 );
 		Q_out	: out std_logic_vector( 7 downto 0 )
 	);
 end reg;
@@ -19,7 +19,7 @@ begin
 	begin
 		if( reset = '1' ) then
 		
-			Q_out <= "00000000";
+			Q_out <= ( others => '0' );
 			
 		elsif( rising_edge( clk ) ) then
 		

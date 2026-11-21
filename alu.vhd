@@ -21,7 +21,7 @@ begin
 		case operation is
 		
 			when "00" =>
-				out_alu <= std_logic_vector( signed( in_a ) + signed( in_b ) );
+				out_alu <= std_logic_vector( unsigned( in_a ) + unsigned( in_b ) );
 			
 			when "01" =>
 				out_alu <= in_a and in_b;

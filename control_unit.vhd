@@ -26,9 +26,7 @@ architecture Behavioral of control_unit is
 							BR, 
 							NT,
 							ADD_reg,
-							ADD_imm,
 							AND_reg,
-							AND_imm,
 							LD_ADDR,
 							LDR_ADDR,
 							LD_MEM,
@@ -82,22 +80,14 @@ begin
 						end if;
 					
 					when "0001" =>
-						if( imme = '1' ) then
-							next_state <= ADD_imm;
-						else
 							next_state <= ADD_reg;
-						end if;
 						
 					when "0010" =>
 						next_state <= LD_ADDR;
 					
 					when "0101" =>
-						if( imme = '1' ) then
-							next_state <= AND_imm;
-						else
 							next_state <= AND_reg;
-						end if;
-					
+
 					when "0110" =>
 						next_state <= LDR_ADDR;
 						
@@ -118,22 +108,23 @@ begin
 				PCWrite    <= '1';
 				RegWrite   <= '0';
 				next_state <= FETCH;
-			
-			when ADD_imm =>
-				ALUSrcA    <= '1';
-				ALUSrcB    <= "10";
-				ALUOp      <= "00";
-				MemReg     <= '0';
-				RegWrite   <= '1';
-				next_state <= FETCH;
 				
 			when ADD_reg =>
-				ALUSrcA    <= '1';
-				ALUSrcB    <= "01";
-				ALUOp      <= "00";
-				MemReg     <= '0';
-				RegWrite   <= '1';
-				next_state <= FETCH;
+				if( imme = '1' ) then
+					ALUSrcA    <= '1';
+					ALUSrcB    <= "10";
+					ALUOp      <= "00";
+					MemReg     <= '0';
+					RegWrite   <= '1';
+					next_state <= FETCH;
+				else
+					ALUSrcA    <= '1';
+					ALUSrcB    <= "01";
+					ALUOp      <= "00";
+					MemReg     <= '0';
+					RegWrite   <= '1';
+					next_state <= FETCH;
+				end if;
 				
 			when LD_ADDR =>
 				ALUSrcA    <= '0';
@@ -141,23 +132,25 @@ begin
 				ALUOp      <= "00";
 				PCWrite    <= '0';
 				next_state <= LD_MEM;
-				
-			when AND_imm =>
-				ALUSrcA    <= '1';
-				ALUSrcB    <= "10";
-				ALUOp      <= "01";
-				MemReg     <= '0';
-				RegWrite   <= '1';
-				next_state <= FETCH;
+	
 				
 			when AND_reg =>
-				ALUSrcA    <= '1';
-				ALUSrcB    <= "01";
-				ALUOp      <= "01";
-				MemReg     <= '0';
-				RegWrite   <= '1';
-				next_state <= FETCH;
-			
+				if( imme = '1' ) then
+					ALUSrcA    <= '1';
+					ALUSrcB    <= "10";
+					ALUOp      <= "01";
+					MemReg     <= '0';
+					RegWrite   <= '1';
+					next_state <= FETCH;
+				else 
+					ALUSrcA    <= '1';
+					ALUSrcB    <= "01";
+					ALUOp      <= "01";
+					MemReg     <= '0';
+					RegWrite   <= '1';
+					next_state <= FETCH;
+				end if;
+				
 			when LDR_ADDR =>
 				ALUSrcA    <= '1';
 				ALUSrcB    <= "10";
